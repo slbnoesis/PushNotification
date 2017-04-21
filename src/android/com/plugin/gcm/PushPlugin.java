@@ -55,15 +55,6 @@ public class PushPlugin extends CordovaPlugin {
 	String regid;
 	Context context;
 	
-	NotificationCompat.Builder mBuilder =
-       new NotificationCompat.Builder(context)
-           .setDefaults(defaults)
-           .setSmallIcon(R.drawable.ic_launcher)
-           .setWhen(System.currentTimeMillis())
-           .setContentTitle(extras.getString("title"))
-           .setTicker(extras.getString("title"))
-           .setContentIntent(contentIntent)
-           .setAutoCancel(true);
 
 	@Override
 	public boolean execute(final String action, final JSONArray data, final CallbackContext callbackContext) {
