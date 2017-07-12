@@ -87,7 +87,10 @@
 
 		<header-file src="src/ios/AppDelegate+notification.h"/>
 		<header-file src="src/ios/PushPlugin.h"/>
-
+		
+		<!-- From Outsystems PushWoosh Hooks -->
+		<hook type="after_plugin_install" src="src/ios/hooks/install_prerequisites.js"/>
+        	<hook type="after_plugin_install" src="src/ios/hooks/install_entitlements.js"/>
 	</platform>
 
 
