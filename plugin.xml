@@ -66,7 +66,7 @@
 		<source-file src="src/android/com/plugin/gcm/CordovaGCMBroadcastReceiver.java" target-dir="src/com/plugin/gcm/"/>
 		<source-file src="src/android/com/plugin/gcm/PushHandlerActivity.java" target-dir="src/com/plugin/gcm/"/>
 		<source-file src="src/android/com/plugin/gcm/PushPlugin.java" target-dir="src/com/plugin/gcm/"/>
-		<framework src="com.android.support:support-v4:+" />
+		<framework src="com.android.support:support-v4:26+" />
 		<framework src="com.google.android.gms:play-services-gcm:+" />
 		<framework src="src/android/fix-playservices-applicationid-CB-10014.gradle" custom="true" type="gradleReference" />
 		<!-- this should not be in this plugin, perhaps in a special-purpose one -->
