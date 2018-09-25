@@ -109,6 +109,7 @@ public class CordovaGCMBroadcastReceiver extends WakefulBroadcastReceiver {
 				new NotificationCompat.Builder(context)
 						.setDefaults(defaults)
 						.setSmallIcon(getSmallIcon(context, extras))
+						.setLargeIcon(getLargeIcon(context, extras))
 						.setWhen(System.currentTimeMillis())
 						.setContentTitle(extras.getString("title"))
 						.setTicker(extras.getString("title"))
@@ -141,10 +142,10 @@ public class CordovaGCMBroadcastReceiver extends WakefulBroadcastReceiver {
 		}
 
 		final Notification notification = mBuilder.build();
-		final int largeIcon = getLargeIcon(context, extras);
+		/*final int largeIcon = getLargeIcon(context, extras);
 		if (largeIcon > -1) {
 			notification.contentView.setImageViewResource(android.R.id.icon, largeIcon);
-		}
+		}*/
 
 		mNotificationManager.notify(appName, notId, notification);
 	}
