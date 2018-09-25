@@ -94,7 +94,7 @@ public class CordovaGCMBroadcastReceiver extends WakefulBroadcastReceiver {
 		notificationIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		notificationIntent.putExtra("pushBundle", extras);
 
-    PendingIntent contentIntent = PendingIntent.getActivity(context, notId, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+    		PendingIntent contentIntent = PendingIntent.getActivity(context, notId, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
 		int defaults = Notification.DEFAULT_ALL;
 
@@ -109,12 +109,12 @@ public class CordovaGCMBroadcastReceiver extends WakefulBroadcastReceiver {
 				new NotificationCompat.Builder(context)
 						.setDefaults(defaults)
 						.setSmallIcon(getSmallIcon(context, extras))
-						.setLargeIcon(getLargeIcon(context, extras))
+						//.setLargeIcon(getLargeIcon(context, extras))
 						.setWhen(System.currentTimeMillis())
 						.setContentTitle(extras.getString("title"))
 						.setTicker(extras.getString("title"))
 						.setContentIntent(contentIntent)
-            .setColor(getColor(extras))
+            					.setColor(getColor(extras))
 						.setAutoCancel(true);
 
 		String message = extras.getString("message");
@@ -142,10 +142,13 @@ public class CordovaGCMBroadcastReceiver extends WakefulBroadcastReceiver {
 		}
 
 		final Notification notification = mBuilder.build();
-		/*final int largeIcon = getLargeIcon(context, extras);
+		final int largeIcon = getLargeIcon(context, extras);
 		if (largeIcon > -1) {
 			notification.contentView.setImageViewResource(android.R.id.icon, largeIcon);
-		}*/
+		} else {
+          		// heard this happened on an Android 7 device.. need to verify and debug
+          		console.log("Not able to set a large icon since contentView is not found...");
+        	}
 
 		mNotificationManager.notify(appName, notId, notification);
 	}
@@ -153,8 +156,8 @@ public class CordovaGCMBroadcastReceiver extends WakefulBroadcastReceiver {
 	private static String getAppName(Context context) {
 		CharSequence appName =
 				context
-						.getPackageManager()
-						.getApplicationLabel(context.getApplicationInfo());
+					.getPackageManager()
+					.getApplicationLabel(context.getApplicationInfo());
 
 		return (String) appName;
 	}
@@ -203,9 +206,9 @@ public class CordovaGCMBroadcastReceiver extends WakefulBroadcastReceiver {
 			icon = getIconValue(context.getPackageName(), iconNameFromServer);
 		}
 
-		// try a custom included icon in our bundle named ic_stat_notify(.png)
+		// try a custom included icon in our bundle named ic_notify(.png)
 		if (icon == -1) {
-			icon = getIconValue(context.getPackageName(), "ic_stat_notify");
+			icon = getIconValue(context.getPackageName(), "ic_notify");
 		}
 
 		// fall back to the regular app icon
