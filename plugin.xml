@@ -73,6 +73,8 @@
 		<framework src="com.android.support:support-v4:26.+" />
 		<framework src="com.google.android.gms:play-services-gcm:+" />
 		<framework src="src/android/fix-playservices-applicationid-CB-10014.gradle" custom="true" type="gradleReference" />
+		<framework src="com.google.firebase:firebase-core:+" />
+		<framework src="com.google.firebase:firebase-messaging:+" />
 		<!-- this should not be in this plugin, perhaps in a special-purpose one -->
 		<!--framework src="src/android/shrinkresources.gradle" custom="true" type="gradleReference" /-->
 	</platform>
