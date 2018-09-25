@@ -147,7 +147,7 @@ public class CordovaGCMBroadcastReceiver extends WakefulBroadcastReceiver {
 			notification.contentView.setImageViewResource(android.R.id.icon, largeIcon);
 		} else {
           		// heard this happened on an Android 7 device.. need to verify and debug
-          		console.log("Not able to set a large icon since contentView is not found...");
+			Log.d(TAG, "Not able to set a large icon since contentView is not found..." + largeIcon);
         	}
 
 		mNotificationManager.notify(appName, notId, notification);
