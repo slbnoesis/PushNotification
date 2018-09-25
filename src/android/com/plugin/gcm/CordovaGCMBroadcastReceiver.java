@@ -204,7 +204,7 @@ public class CordovaGCMBroadcastReceiver extends WakefulBroadcastReceiver {
 
 		// try a custom included icon in our bundle named ic_stat_notify(.png)
 		if (icon == -1) {
-			icon = getIconValue(context.getPackageName(), "ic_notify");
+			icon = getIconValue(context.getPackageName(), "ic_stat_notify");
 		}
 
 		// fall back to the regular app icon
