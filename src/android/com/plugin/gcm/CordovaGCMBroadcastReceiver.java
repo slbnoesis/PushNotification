@@ -112,7 +112,7 @@ public class CordovaGCMBroadcastReceiver extends WakefulBroadcastReceiver {
 		NotificationCompat.Builder mBuilder =
 				new NotificationCompat.Builder(context)
 						.setDefaults(defaults)
-						.setSmallIcon(getSmallIcon(context, extras))
+						//.setSmallIcon(getSmallIcon(context, extras))
 						//.setLargeIcon(getLargeIcon(context, extras))
 						.setWhen(System.currentTimeMillis())
 						.setContentTitle(extras.getString("title"))
@@ -145,6 +145,20 @@ public class CordovaGCMBroadcastReceiver extends WakefulBroadcastReceiver {
 			mBuilder.setDefaults(defaults);
 		}
 
+		final int smallIcon = getSmallIcon(context, extras);
+		if (smallIcon > -1) {
+			/*try {
+				notification.contentView.setImageViewResource(android.R.id.icon, largeIcon);
+			} catch (Exception e) { 
+				Log.e(TAG, "Not able to set a large icon since contentView is not found..." + largeIcon);
+			}*/
+			Log.d(TAG, "Setting small icon... ");
+			Drawable drawable = context.getResources().getDrawable(smallIcon);
+			Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+                	//Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), largeIcon);
+                	mBuilder.setSmallIcon(bitmap);
+		}
+		
 		final int largeIcon = getLargeIcon(context, extras);
 		if (largeIcon > -1) {
 			/*try {
