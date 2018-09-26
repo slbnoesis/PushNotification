@@ -152,7 +152,7 @@ public class CordovaGCMBroadcastReceiver extends WakefulBroadcastReceiver {
 				Log.e(TAG, "Not able to set a large icon since contentView is not found..." + largeIcon);
 			}*/
 			Log.d(TAG, "Setting large icon... ");
-                	Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), largeIcon);
+                	Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.largeIcon);
                 	mBuilder.setLargeIcon(bitmap);
 		} 
 
