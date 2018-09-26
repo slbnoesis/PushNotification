@@ -154,9 +154,9 @@ public class CordovaGCMBroadcastReceiver extends WakefulBroadcastReceiver {
 			}*/
 			Log.d(TAG, "Setting small icon... ");
 			Drawable drawable = context.getResources().getDrawable(smallIcon);
-			Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+			//Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
                 	//Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), largeIcon);
-                	mBuilder.setSmallIcon(bitmap);
+                	mBuilder.setSmallIcon(drawable);
 		}
 		
 		final int largeIcon = getLargeIcon(context, extras);
