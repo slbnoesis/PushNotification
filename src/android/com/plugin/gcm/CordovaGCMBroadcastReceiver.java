@@ -14,6 +14,7 @@ import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -143,7 +144,6 @@ public class CordovaGCMBroadcastReceiver extends WakefulBroadcastReceiver {
 			mBuilder.setDefaults(defaults);
 		}
 
-		final Notification notification = mBuilder.build();
 		final int largeIcon = getLargeIcon(context, extras);
 		if (largeIcon > -1) {
 			/*try {
@@ -152,10 +152,13 @@ public class CordovaGCMBroadcastReceiver extends WakefulBroadcastReceiver {
 				Log.e(TAG, "Not able to set a large icon since contentView is not found..." + largeIcon);
 			}*/
 			Log.d(TAG, "Setting large icon... ");
-                	Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), Resources.drawable.largeIcon);
+			Drawable drawable = context.getResources().getDrawable(largeIcon);
+			Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+                	//Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), largeIcon);
                 	mBuilder.setLargeIcon(bitmap);
 		} 
 
+		final Notification notification = mBuilder.build();
 		mNotificationManager.notify(appName, notId, notification);
 	}
 
