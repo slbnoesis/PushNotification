@@ -35,6 +35,7 @@ import java.util.List;
 
 public class PushPlugin extends CordovaPlugin {
 	public static final String TAG = "PushPlugin";
+	public static final String LOG_TAG = "Push_Plugin";
 
 	public static final String REGISTER = "register";
 	public static final String UNREGISTER = "unregister";
