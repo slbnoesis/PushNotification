@@ -2,14 +2,12 @@ package com.plugin.gcm;
 
 import android.app.Activity;
 import android.app.NotificationManager;
-import android.app.NotificationChannel;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Build;
 import android.util.Log;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -132,17 +130,6 @@ public class PushPlugin extends CordovaPlugin {
 			callbackContext.error("Invalid action : " + action);
 			return false;
 		}
-	}
-	
-	//Creates a default channel for devices with API 26 or superior
-	public void initChannels(Context context) {
-    		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-        		return;
-    		}
-    		NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-    		NotificationChannel channel = new NotificationChannel("default", "Channel name", NotificationManager.IMPORTANCE_DEFAULT);
-    		channel.setDescription("Channel description");
-    		notificationManager.createNotificationChannel(channel);
 	}
 
 	/**
