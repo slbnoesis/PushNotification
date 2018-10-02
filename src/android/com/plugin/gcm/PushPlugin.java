@@ -9,7 +9,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Build.VERSION;
+import android.os.Build;
 import android.util.Log;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -136,7 +136,7 @@ public class PushPlugin extends CordovaPlugin {
 	
 	//Creates a default channel for devices with API 26 or superior
 	public void initChannels(Context context) {
-    		if (Build.VERSION.SDK_INT < 26) {
+    		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
         		return;
     		}
     		NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
