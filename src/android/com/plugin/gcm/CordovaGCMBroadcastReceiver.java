@@ -2,21 +2,23 @@ package com.plugin.gcm;
 
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.NotificationChannel;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Color;
-import android.net.Uri;
-import android.os.Bundle;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.WakefulBroadcastReceiver;
-import android.util.Log;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Icon;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Build;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.WakefulBroadcastReceiver;
+import android.util.Log;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -91,8 +93,15 @@ public class CordovaGCMBroadcastReceiver extends WakefulBroadcastReceiver {
 			Log.d(TAG, "Received notId: " + notId);
 		}
 
-
 		NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+		
+		//For Android API 26 or above create a default channel
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        		NotificationChannel channel = new NotificationChannel("default", "defaultName", NotificationManager.IMPORTANCE_HIGH);
+    			channel.setDescription("defaultDescription");
+    			mNotificationManager.createNotificationChannel(channel);
+    		}
+		
 		String appName = getAppName(context);
 
 		Intent notificationIntent = new Intent(context, PushHandlerActivity.class);
