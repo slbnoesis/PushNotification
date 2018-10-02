@@ -183,18 +183,18 @@ public class CordovaGCMBroadcastReceiver extends WakefulBroadcastReceiver {
 		int icon = -1;
 
 		// first try an iconname possible passed in the server payload
-		/*final String iconNameFromServer = extras.getString("smallIcon");
+		final String iconNameFromServer = extras.getString("smallIcon");
 		if (iconNameFromServer != null) {
 			icon = getIconValue(context.getPackageName(), iconNameFromServer);
-		}*/
+		}
 
 		// try a custom included icon in our bundle named ic_stat_notify(.png)
-		if (icon == -1) {
+		/*if (icon == -1) {
 			icon = getIconValue(context.getPackageName(), "ic_stat_notify");
 		}
 
 		// fall back to the regular app icon
-		/*if (icon == -1) {
+		if (icon == -1) {
 			icon = context.getApplicationInfo().icon;
 		}*/
 
