@@ -111,7 +111,7 @@ public class CordovaGCMBroadcastReceiver extends WakefulBroadcastReceiver {
 		}
 
 		NotificationCompat.Builder mBuilder =
-				new NotificationCompat.Builder(context)
+				new NotificationCompat.Builder(context, "default")
 						.setDefaults(defaults)
 						.setSmallIcon(getSmallIcon(context, extras))
 						//.setLargeIcon(getLargeIcon(context, extras))
