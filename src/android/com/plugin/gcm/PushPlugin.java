@@ -1,21 +1,14 @@
 package com.plugin.gcm;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.ContentResolver;
+import android.app.NotificationChannel;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.media.AudioAttributes;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Build;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -24,18 +17,12 @@ import org.apache.cordova.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import android.util.Log;
+import android.content.res.Resources;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.ArrayList;
-import java.util.List;
 
 public class PushPlugin extends CordovaPlugin {
 	public static final String TAG = "PushPlugin";
-	public static final String LOG_TAG = "Push_Plugin";
 
 	public static final String REGISTER = "register";
 	public static final String UNREGISTER = "unregister";
@@ -44,18 +31,6 @@ public class PushPlugin extends CordovaPlugin {
 	public static final String PROPERTY_APPVERSION = "app_version";
 	public static final String EXTRA_MESSAGE = "message";
 	public static final String EXIT = "exit";
-	public static final String DEFAULT_CHANNEL_ID = "PushPluginChannel";
-  	public static final String CHANNELS = "channels";
-  	public static final String CHANNEL_ID = "id";
-  	public static final String CHANNEL_DESCRIPTION = "description";
-  	public static final String CHANNEL_IMPORTANCE = "importance";
-  	public static final String CHANNEL_LIGHT_COLOR = "lightColor";
-  	public static final String CHANNEL_VIBRATION = "vibration";
-  	public static final String SOUND = "sound";
-  	public static final String SOUND_DEFAULT = "default";
-  	public static final String VISIBILITY = "visibility";
-  	public static final String BADGE = "badge";
-  	public static final String SOUND_RINGTONE = "ringtone";
 	private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
 	private static CordovaWebView gWebView;
@@ -101,9 +76,6 @@ public class PushPlugin extends CordovaPlugin {
 				gSenderID = (String) jo.get("senderID");
 
 				Log.v(TAG, "execute: ECB=" + gECB + " senderID=" + gSenderID);
-				
-				// If no NotificationChannels exist create the default one
-				createDefaultNotificationChannelIfNeeded(jo);
 
 				context = getApplicationContext();
 
@@ -160,89 +132,18 @@ public class PushPlugin extends CordovaPlugin {
 			return false;
 		}
 	}
-
 	
-	@TargetApi(26)
-	private void createChannel(JSONObject channel) throws JSONException {
-		// only call on Android O and above
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-			final NotificationManager notificationManager = (NotificationManager) cordova.getActivity()
-					.getSystemService(Context.NOTIFICATION_SERVICE);
-
-			String packageName = getApplicationContext().getPackageName();
-			NotificationChannel mChannel = new NotificationChannel(channel.getString(CHANNEL_ID),
-					channel.optString(CHANNEL_DESCRIPTION, ""),
-					channel.optInt(CHANNEL_IMPORTANCE, NotificationManager.IMPORTANCE_DEFAULT));
-
-			int lightColor = channel.optInt(CHANNEL_LIGHT_COLOR, -1);
-			if (lightColor != -1) {
-				mChannel.setLightColor(lightColor);
-			}
-
-			int visibility = channel.optInt(VISIBILITY, NotificationCompat.VISIBILITY_PUBLIC);
-			mChannel.setLockscreenVisibility(visibility);
-
-			boolean badge = channel.optBoolean(BADGE, true);
-			mChannel.setShowBadge(badge);
-
-			String sound = channel.optString(SOUND, "default");
-			AudioAttributes audioAttributes = new AudioAttributes.Builder()
-					.setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-					.setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE).build();
-			if (SOUND_RINGTONE.equals(sound)) {
-				mChannel.setSound(android.provider.Settings.System.DEFAULT_RINGTONE_URI, audioAttributes);
-			} else if (sound != null && !sound.contentEquals(SOUND_DEFAULT)) {
-				Uri soundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + packageName + "/raw/" + sound);
-				mChannel.setSound(soundUri, audioAttributes);
-			} else {
-				mChannel.setSound(android.provider.Settings.System.DEFAULT_NOTIFICATION_URI, audioAttributes);
-			}
-
-			// If vibration settings is an array set vibration pattern, else set enable
-			// vibration.
-			JSONArray pattern = channel.optJSONArray(CHANNEL_VIBRATION);
-			if (pattern != null) {
-				int patternLength = pattern.length();
-				long[] patternArray = new long[patternLength];
-				for (int i = 0; i < patternLength; i++) {
-					patternArray[i] = pattern.optLong(i);
-				}
-				mChannel.setVibrationPattern(patternArray);
-			} else {
-				boolean vibrate = channel.optBoolean(CHANNEL_VIBRATION, true);
-				mChannel.enableVibration(vibrate);
-			}
-
-			notificationManager.createNotificationChannel(mChannel);
-		}
+	//Creates a default channel for devices with API 26 or superior
+	public void initChannels(Context context) {
+    		if (Build.VERSION.SDK_INT < 26) {
+        		return;
+    		}
+    		NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+    		NotificationChannel channel = new NotificationChannel("default", "Channel name", NotificationManager.IMPORTANCE_DEFAULT);
+    		channel.setDescription("Channel description");
+    		notificationManager.createNotificationChannel(channel);
 	}
 
-	@TargetApi(26)
-	private void createDefaultNotificationChannelIfNeeded(JSONObject options) {
-		String id;
-		// only call on Android O and above
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-			final NotificationManager notificationManager = (NotificationManager) cordova.getActivity()
-					.getSystemService(Context.NOTIFICATION_SERVICE);
-			List<NotificationChannel> channels = notificationManager.getNotificationChannels();
-
-			for (int i = 0; i < channels.size(); i++) {
-				id = channels.get(i).getId();
-				if (id.equals(DEFAULT_CHANNEL_ID)) {
-					return;
-				}
-			}
-			try {
-				options.put(CHANNEL_ID, DEFAULT_CHANNEL_ID);
-				options.putOpt(CHANNEL_DESCRIPTION, "PhoneGap PushPlugin");
-				createChannel(options);
-			} catch (JSONException e) {
-				Log.e(LOG_TAG, "execute: Got JSON Exception " + e.getMessage());
-			}
-		}
-	}
-	
-	
 	/**
 	 * Gets the current registration ID for application on GCM service.
 	 * <p/>
